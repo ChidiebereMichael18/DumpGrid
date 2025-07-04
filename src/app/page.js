@@ -87,7 +87,7 @@ export default function Home() {
               <>
                 <button
                   onClick={handleAddPhotoClick}
-                  className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-5 py-2 rounded-lg font-semibold shadow transition"
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-5 py-2 rounded-lg cursor-pointer font-semibold shadow transition"
                 >
                   Add Photo
                 </button>
@@ -97,7 +97,7 @@ export default function Home() {
                     type="file"
                     accept="image/*"
                     onChange={handleFileChange}
-                    className="bg-white text-black p-2 rounded mt-2"
+                    className="bg-white text-black p-2 rounded mt-2 mx-4 text-sm"
                   />
                 )}
               </>
@@ -114,7 +114,7 @@ export default function Home() {
                   />
                   <button
                     onClick={() => handleRemovePhoto(idx)}
-                    className="absolute top-0 right-0 bg-red-600 text-white rounded-full px-2 py-0 text-xs opacity-80 group-hover:opacity-100 transition"
+                    className="absolute top-0 right-0 bg-red-600 text-white cursor-pointer rounded-full px-2 py-0 text-xs opacity-80 group-hover:opacity-100 transition"
                     style={{ transform: "translate(30%,-30%)" }}
                     title="Remove"
                   >
@@ -129,27 +129,27 @@ export default function Home() {
             <div className="flex flex-col items-center w-full mt-6 gap-4">
               <button
                 onClick={() => setShowPreview(true)}
-                className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-6 py-2 rounded-lg font-semibold shadow transition"
+                className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white cursor-pointer px-6 py-2 rounded-lg font-semibold shadow transition"
               >
                 Preview Grid 👀
               </button>
               <button
                 onClick={downloadGrid}
-                className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white px-6 py-2 rounded-lg font-semibold shadow transition"
+                className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white cursor-pointer px-6 py-2 rounded-lg font-semibold shadow transition"
               >
                 Download Dump 📥
               </button>
               {previousGrid && (
                 <button
                   onClick={() => setShowPrevModal(true)}
-                  className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-6 py-2 rounded-lg font-semibold shadow transition"
+                  className="bg-gradient-to-r  from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white cursor-pointer px-6 py-2 rounded-lg font-semibold shadow transition"
                 >
                   View Previous Grid
                 </button>
               )}
               <button
                 onClick={handleStartNewGrid}
-                className="bg-gradient-to-r from-gray-700 to-gray-900 hover:from-gray-800 hover:to-black text-white px-6 py-2 rounded-lg font-semibold shadow transition"
+                className="bg-gradient-to-r from-gray-700 to-gray-900 hover:from-gray-800 hover:to-black text-white cursor-pointer px-6 py-2 rounded-lg font-semibold shadow transition"
               >
                 Start New Grid
               </button>
@@ -159,7 +159,7 @@ export default function Home() {
           {images.length === 0 && previousGrid && (
             <button
               onClick={() => setShowPrevModal(true)}
-              className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-6 py-2 rounded-lg font-semibold shadow transition mt-6"
+              className="bg-gradient-to-r cursor-pointer from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-6 py-2 rounded-lg font-semibold shadow transition mt-6"
             >
               View Previous Grid
             </button>
@@ -214,7 +214,7 @@ export default function Home() {
               <div className="relative bg-black rounded-xl shadow-2xl p-4">
                 <button
                   onClick={() => setShowPreview(false)}
-                  className="absolute top-2 right-2 bg-red-600 text-white rounded-full px-3 py-1 text-lg font-bold"
+                  className="absolute cursor-pointer top-2 right-2 bg-red-600 text-white rounded-full px-3 py-1 text-lg font-bold"
                   title="Close"
                 >
                   ×
@@ -262,7 +262,7 @@ export default function Home() {
               <div className="relative bg-black rounded-xl shadow-2xl p-4 flex flex-col items-center">
                 <button
                   onClick={() => setShowPrevModal(false)}
-                  className="absolute top-2 right-2 bg-red-600 text-white rounded-full px-3 py-1 text-lg font-bold"
+                  className="absolute top-2 right-2 cursor-pointer bg-red-600 text-white rounded-full px-3 py-1 text-lg font-bold"
                   title="Close"
                 >
                   ×
@@ -276,7 +276,7 @@ export default function Home() {
                 <a
                   href={previousGrid}
                   download="dumpgrid.png"
-                  className="mt-4 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white px-6 py-2 rounded-lg font-semibold shadow transition"
+                  className="mt-4 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 cursor-pointer text-white px-6 py-2 rounded-lg font-semibold shadow transition"
                 >
                   Download Again
                 </a>
@@ -287,18 +287,18 @@ export default function Home() {
       </div>
       {/* App description and author */}
       <div className="mt-8 text-center text-gray-300 text-sm max-w-xl">
-        <p>
+        <p className="mx-2">
           <strong>DumpGrid</strong> lets you easily create and download a grid collage from 2 to 12 of your favorite photos. 
           Select your images, preview the grid, and save it as a transparent PNG. Your last grid is always available in your browser for quick access.
         </p>
-        <p className="mt-2">
+        <p className="mt-4">
           Made with evil by <a href="https://github.com/ChidiebereMichael18" target="_blank" rel="noopener noreferrer" className="underline hover:text-white"> IFearAids</a>
         </p>
-        <div className="mt-4 flex justify-center">
+        <div className="my-4 flex justify-center">
           <a
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-4 py-2 rounded-lg shadow transition"
+            className="inline-flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-black font-bold cursor-pointer px-4 py-2 rounded-lg shadow transition"
             onClick={() => alert("Bank Account: Palmpay \nAccount Number: 8120414388")}
           >
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
