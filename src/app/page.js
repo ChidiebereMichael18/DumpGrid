@@ -8,7 +8,6 @@ export default function Home() {
   const [showPreview, setShowPreview] = useState(false);
   const [previousGrid, setPreviousGrid] = useState(null);
   const [showPrevModal, setShowPrevModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const previewRef = useRef(null);
   const hiddenPreviewRef = useRef(null);
 
@@ -24,21 +23,6 @@ export default function Home() {
       localStorage.setItem("dumpgrid_previous", previousGrid);
     }
   }, [previousGrid]);
-
-  // Preload images for better rendering
-  useEffect(() => {
-    const preloadImages = async () => {
-      await Promise.allimages.map(src => {
-        return new Promise((resolve) => {
-          const img = new Image();
-          img.src = src;
-          img.onload = resolve;
-          img.onerror = resolve;
-        });
-      });
-    };
-    preloadImages();
-  }, [images]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -67,48 +51,21 @@ export default function Home() {
   };
 
   const downloadGrid = async () => {
-    setIsLoading(true);
     const ref = showPreview ? previewRef : hiddenPreviewRef;
-    if (!ref.current) {
-      setIsLoading(false);
-      return;
-    }
-    
-    // If using hidden div, wait briefly for layout
+    if (!ref.current) return;
     if (!showPreview) {
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 10));
     }
-
-    try {
-      const canvas = await html2canvas(ref.current, {
-        backgroundColor: null,
-        useCORS: true,
-        scale: 2, // Double the resolution for better quality
-        logging: false,
-        allowTaint: true,
-        onclone: (clonedDoc) => {
-          // Ensure cloned elements maintain proper sizing
-          const clonedRef = clonedDoc.getElementById(ref.current.id);
-          if (clonedRef) {
-            clonedRef.style.width = `${ref.current.offsetWidth}px`;
-            clonedRef.style.height = `${ref.current.offsetHeight}px`;
-          }
-        }
-      });
-      
-      const dataUrl = canvas.toDataURL('image/png', 1.0);
-      setPreviousGrid(dataUrl);
-      
-      const link = document.createElement('a');
-      link.download = 'dumpgrid.png';
-      link.href = dataUrl;
-      link.click();
-    } catch (error) {
-      console.error("Error generating image:", error);
-      alert("Error generating image. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
+    const canvas = await html2canvas(ref.current, {
+      backgroundColor: null,
+      useCORS: true,
+    });
+    const dataUrl = canvas.toDataURL();
+    setPreviousGrid(dataUrl); // Save for later viewing and triggers localStorage update
+    const link = document.createElement("a");
+    link.download = "dumpgrid.png";
+    link.href = dataUrl;
+    link.click();
   };
 
   return (
@@ -178,15 +135,14 @@ export default function Home() {
               </button>
               <button
                 onClick={downloadGrid}
-                disabled={isLoading}
-                className={`bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white cursor-pointer px-6 py-2 rounded-lg font-semibold shadow transition ${isLoading ? 'opacity-70' : ''}`}
+                className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white cursor-pointer px-6 py-2 rounded-lg font-semibold shadow transition"
               >
-                {isLoading ? 'Generating...' : 'Download Dump 📥'}
+                Download Dump 📥
               </button>
               {previousGrid && (
                 <button
                   onClick={() => setShowPrevModal(true)}
-                  className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white cursor-pointer px-6 py-2 rounded-lg font-semibold shadow transition"
+                  className="bg-gradient-to-r  from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white cursor-pointer px-6 py-2 rounded-lg font-semibold shadow transition"
                 >
                   View Previous Grid
                 </button>
@@ -215,13 +171,10 @@ export default function Home() {
               left: -9999,
               top: -9999,
               pointerEvents: "none",
-              width: "600px",
-              height: "auto"
             }}
           >
             <div
               ref={hiddenPreviewRef}
-              id="hidden-grid"
               className={`grid ${
                 images.length <= 4
                   ? "grid-cols-2"
@@ -236,8 +189,8 @@ export default function Home() {
                 background: "transparent",
                 borderRadius: "0.75rem",
                 overflow: "hidden",
-                width: "100%",
-                height: "auto"
+                maxWidth: 600,
+                minWidth: 300,
               }}
             >
               {images.map((src, index) => (
@@ -245,17 +198,12 @@ export default function Home() {
                   key={index}
                   src={src}
                   alt={`Dump image ${index + 1}`}
-                  className="w-full"
+                  className="w-full h-40 object-cover"
                   style={{
                     borderRadius: 0,
                     boxShadow: "none",
                     margin: 0,
-                    width: "100%",
-                    height: "160px",
-                    objectFit: "cover",
-                    display: "block"
                   }}
-                  crossOrigin="anonymous"
                 />
               ))}
             </div>
@@ -273,7 +221,6 @@ export default function Home() {
                 </button>
                 <div
                   ref={previewRef}
-                  id="preview-grid"
                   className={`grid ${
                     images.length <= 4
                       ? "grid-cols-2"
@@ -288,8 +235,8 @@ export default function Home() {
                     background: "transparent",
                     borderRadius: "0.75rem",
                     overflow: "hidden",
-                    width: "600px",
-                    maxWidth: "90vw"
+                    maxWidth: 600,
+                    minWidth: 300,
                   }}
                 >
                   {images.map((src, index) => (
@@ -297,15 +244,11 @@ export default function Home() {
                       key={index}
                       src={src}
                       alt={`Dump image ${index + 1}`}
-                      className="w-full"
+                      className="w-full h-40 object-cover"
                       style={{
                         borderRadius: 0,
                         boxShadow: "none",
                         margin: 0,
-                        width: "100%",
-                        height: "160px",
-                        objectFit: "cover",
-                        display: "block"
                       }}
                     />
                   ))}
