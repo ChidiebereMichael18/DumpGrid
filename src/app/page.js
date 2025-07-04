@@ -59,6 +59,7 @@ export default function Home() {
     const canvas = await html2canvas(ref.current, {
       backgroundColor: null,
       useCORS: true,
+      scale: 2, // Increase scale for better quality
     });
     const dataUrl = canvas.toDataURL();
     setPreviousGrid(dataUrl); // Save for later viewing and triggers localStorage update
@@ -198,12 +199,15 @@ export default function Home() {
                   key={index}
                   src={src}
                   alt={`Dump image ${index + 1}`}
-                  className="w-full h-40 object-cover"
-                  style={{
-                    borderRadius: 0,
-                    boxShadow: "none",
-                    margin: 0,
-                  }}
+                  // className="w-full h-40 object-cover"
+                    style={{
+    width: "100%",
+    height: "150px",
+    objectFit: "cover",
+    borderRadius: 0,
+    margin: 0,
+    boxShadow: "none",
+}}
                 />
               ))}
             </div>
@@ -244,12 +248,15 @@ export default function Home() {
                       key={index}
                       src={src}
                       alt={`Dump image ${index + 1}`}
-                      className="w-full h-40 object-cover"
-                      style={{
-                        borderRadius: 0,
-                        boxShadow: "none",
-                        margin: 0,
-                      }}
+                      // className="w-full h-40 object-cover"
+                       style={{
+    width: "100%",
+    height: "150px",
+    objectFit: "cover",
+    borderRadius: 0,
+    margin: 0,
+    boxShadow: "none",
+  }}
                     />
                   ))}
                 </div>
