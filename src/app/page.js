@@ -245,7 +245,7 @@ export default function Home() {
                       key={index}
                       src={src}
                       alt={`Dump image ${index + 1}`}
-                      className="w-full h-70 object-cover"
+                      className="w-full h-50 object-cover"
                       style={{
                         borderRadius: 0,
                         boxShadow: "none",
